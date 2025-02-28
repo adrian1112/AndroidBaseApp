@@ -17,6 +17,7 @@ object AppModule {
     fun provideApiClient(): ApiClient = ApiClient()
 
     @Provides
+    @Singleton
     fun provideLoginRepository(apiClient: ApiClient): LoginRepository {
         return LoginRepository(apiClient)
     }

@@ -40,9 +40,10 @@ import com.kalagui.residify.ui.theme.ResidifyTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Registration(
+    modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: RegistrationViewModel = viewModel(),
-    modifier: Modifier = Modifier) {
+    ) {
 //    var revenue by rememberSaveable { mutableStateOf(0) }
     val form by viewModel.form.collectAsState()
     //Get current back stack entry
@@ -138,6 +139,6 @@ fun Registration(
 fun GreetingPreview() {
     ResidifyTheme {
         val navController = rememberNavController()
-        Registration(navController)
+        Registration(navController = navController)
     }
 }

@@ -15,7 +15,7 @@ enum class ResidifyScreens() {
 @Composable
 fun AppNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = ResidifyScreens.Login.name) {
-        composable(ResidifyScreens.Login.name) { Login(navController) }
-        composable(ResidifyScreens.Registration.name) { Registration(navController) }
+        composable(ResidifyScreens.Login.name) { Login(navController = navController) }
+        composable(ResidifyScreens.Registration.name) { Registration(navController = navController) }
     }
 }

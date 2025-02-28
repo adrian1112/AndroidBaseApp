@@ -4,13 +4,14 @@ import com.kalagui.residify.network.api.ApiClient
 import com.kalagui.residify.network.api.HttpMethod
 import com.kalagui.residify.network.model.GenericResponse
 import com.kalagui.residify.network.model.LoginResponse
+import javax.inject.Inject
 
-class LoginRepository(private val apiClient: ApiClient) {
+class LoginRepository @Inject constructor(private val apiClient: ApiClient){
 
-    suspend fun login(params: Map<String, Any>): GenericResponse<LoginResponse> {
-        return apiClient.makeRequest(
+    suspend fun login(params: Map<String, String>): GenericResponse<LoginResponse> {
+        return apiClient.makeRequest<LoginResponse>(
             method = HttpMethod.POST,
-            path = "/api/v1/user/resident/auth/login",
+            path = "api/v1/user/auth/login",
             params = params
         )
     }
