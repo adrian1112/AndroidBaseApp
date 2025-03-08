@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.kalagui.residify.R
 import com.kalagui.residify.ui.components.AppBar
+import com.kalagui.residify.ui.components.CustomTextField
 import com.kalagui.residify.ui.components.PasswordField
 import com.kalagui.residify.ui.theme.ResidifyTheme
 
@@ -73,36 +77,36 @@ fun Registration(
                 .padding(top = 20.dp, bottom = 20.dp)) {
                 Text(
                     text = "Registro",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = TextStyle(fontSize = 24.sp),
                     color = Color.Red,
                     modifier = modifier.align(alignment = Alignment.Center),)
             }
-            TextField(
+            CustomTextField(
                 modifier = modifier
                     .padding(top = 20.dp)
                     .fillMaxWidth(),
                 value = form.name,
                 onValueChange = { viewModel.setName(it) },
-                singleLine = true,
-                placeholder = { Text(text = "Nombre") })
-            TextField(
+                placeholder = "Nombre")
+            CustomTextField(
                 modifier = modifier
                     .padding(top = 20.dp)
                     .fillMaxWidth(),
                 value = form.mail,
                 onValueChange = { viewModel.setMail(it) },
-                singleLine = true,
-                placeholder = { Text(text = "Correo") })
+                placeholder = "Correo",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            )
             PasswordField(modifier = modifier
                 .padding(top = 10.dp)
                 .fillMaxWidth(),
                 value = form.password,
-                onTextChange = {viewModel.setPassword(it)})
+                onValueChange = {viewModel.setPassword(it)})
             PasswordField(modifier = modifier
                 .padding(top = 10.dp)
                 .fillMaxWidth(),
                 value = form.confirmPassword,
-                onTextChange = {viewModel.setConfirmPassword(it)})
+                onValueChange = {viewModel.setConfirmPassword(it)})
 
             Row(modifier = modifier.padding(vertical = 35.dp)) {
                 Image(modifier = modifier

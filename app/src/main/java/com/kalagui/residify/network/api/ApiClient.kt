@@ -1,5 +1,8 @@
 package com.kalagui.residify.network.api
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.kalagui.residify.network.model.GenericResponse
+//import com.kalagui.residify.network.model.GenericResponseTypeAdapter
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -79,7 +82,7 @@ class ApiClient @Inject constructor() {
         client = createOkHttpClient(getHeaders())
     }
 
-    suspend inline fun <reified T> makeRequest(
+    suspend inline fun <reified T > makeRequest(
         method: HttpMethod,
         path: String,
         params: Map<String, String>? = emptyMap()

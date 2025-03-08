@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,13 +24,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,11 +41,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.kalagui.residify.R
+import com.kalagui.residify.navigation.NavigationEvent
 import com.kalagui.residify.navigation.ResidifyScreens
 import com.kalagui.residify.ui.components.AppBar
+import com.kalagui.residify.ui.components.CustomTextField
 import com.kalagui.residify.ui.components.Loading
 import com.kalagui.residify.ui.components.PasswordField
 import com.kalagui.residify.ui.theme.ResidifyTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,6 +63,22 @@ fun Login(
     val form by viewModel.form.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+//    LaunchedEffect(Unit) {
+//        viewModel.navigationEvents.collectLatest { event ->
+//            when (event) {
+//                NavigationEvent.NavigateToHome -> {
+//                    navController.navigate(ResidifyScreens.Home) {
+//                        popUpTo(ResidifyScreens.Login.name) { inclusive = true }
+//                    }
+//                }
+//                else -> {
+//                    //TODO
+//                }
+//            }
+//        }
+//    }
 
     Scaffold(
         topBar = {
@@ -109,19 +132,29 @@ fun Login(
                     text = "La App que tiene todo lo que un conjunto residencial necesita.",
                     fontSize = 18.sp,
                 )
-                TextField(
+//                TextField(
+//                    modifier = modifier
+//                        .padding(top = 20.dp)
+//                        .fillMaxWidth(),
+//                    value = form.mail,
+//                    onValueChange = { viewModel.setMail(it) },
+//                    singleLine = true,
+//                    placeholder = { Text(text = "Correo") })
+                CustomTextField(
                     modifier = modifier
-                        .padding(top = 20.dp)
-                        .fillMaxWidth(),
+                    .padding(top = 20.dp)
+                    .fillMaxWidth(),
                     value = form.mail,
                     onValueChange = { viewModel.setMail(it) },
-                    singleLine = true,
-                    placeholder = { Text(text = "Correo") })
+                    placeholder = "Correo",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                    )
                 PasswordField(modifier = modifier
                     .padding(top = 10.dp)
                     .fillMaxWidth(),
                     value = form.password,
-                    onTextChange = { viewModel.setPassword(it) }
+                    onValueChange = { viewModel.setPassword(it) },
+                    placeholder = "Contraseña"
                 )
                 errorMessage?.let { message ->
                     Spacer(modifier = Modifier.height(8.dp))
@@ -141,7 +174,10 @@ fun Login(
                         .fillMaxWidth()
                         .height(45.dp),
                     onClick = {
-                        viewModel.login()
+                        keyboardController?.hide()
+                        viewModel.login(){
+                            navController.navigate(ResidifyScreens.Registration.name)
+                        }
                     }
                 ) {
                     Text(text = "Continuar")
@@ -159,6 +195,7 @@ fun Login(
                         .fillMaxWidth()
                         .height(45.dp),
                     onClick = {
+                        keyboardController?.hide()
                         navController.navigate(ResidifyScreens.Registration.name)
                     }
                 ) {
